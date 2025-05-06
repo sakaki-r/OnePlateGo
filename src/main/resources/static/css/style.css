@@ -1,0 +1,652 @@
+@charset "UTF-8";
+
+/* =============================
+   全ページ共通
+   ============================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(252, 238, 194);
+  font-family: "Kosugi Maru","M PLUS Rounded 1c","Hiragino Kaku Gothic ProN", 'ヒラギノ角ゴ Pro W3', Meiryo, 'メイリオ', Osaka, 'MS PGothic', arial, helvetica, sans-serif;
+  text-align: center;
+  color: #4a3b2b;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0);
+  flex: 1;
+}
+
+/* ヘッダー */
+.header-bar {
+  position: relative;
+  height: 100px;
+  background-color: rgb(252, 238, 194);
+ }
+
+.site-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size:36px; 
+  font-family: 'Kosugi Maru', sans-serif; 
+  color: #4a3b2b;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.show-login-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  background-color: #ffe4b2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+  color: #b22222;
+  /* ✅ インライン化＋上下中央揃え */
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+}
+.show-login-btn:hover {
+  background-color: #ffd888;
+  color: #8b0000;
+}
+
+.user-info {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-end; 
+  gap: 2px;         
+  font-size: 13px;
+  font-weight: bold;
+  color: #4a3b2b;
+  max-width: 200px;   
+}
+
+.logout-link {
+  padding: 6px 12px;
+  text-decoration: none;
+  color: #4a3b2b;
+  transition: 0.3s;
+}
+
+.logout-link:hover {
+  color: #000;
+}
+
+.btn-dotted {
+  display: inline-flex;         
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: transparent;
+  color: #4a3b2b;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px dotted #5B913B;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  height: 48px;           
+  box-sizing: border-box;
+}
+
+.btn-dotted:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-color: #7a5c3b;
+  color: #2c1c0a;
+}
+
+.action-buttons {
+  display: inline-flex;   
+  justify-content: center;
+  align-items: stretch; /*stretchで高さ揃え */
+  gap: 100px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+
+
+/* ========= フッター固定ナビ ========= */
+.footer-nav {
+  width: 100%;
+  text-align: center;
+  padding: 16px 0 8px 0;
+  margin-top: auto;
+  border-top: 1px solid #e0d0b5;
+  background-color: rgb(252, 238, 194);
+}
+
+.footer-nav .fotterbtn {
+  font-size: 16px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #4a3b2b;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-nav .fotterbtn:hover {
+  background-color: #fff8e1;
+  cursor: pointer;
+}
+
+/* 著作表示 */
+.footer-nav .copyright {
+  font-size: 12px;
+  margin-top: 8px;
+  color: #7a6652;
+  font-family: 'Kosugi Maru', sans-serif;
+}
+
+
+
+/* ========= 献立作成ページ ========= */
+.plate-container {
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  height: 600px;
+  margin: 10px auto;
+  padding: 20px;
+  background: url("/images/plate.jpg") no-repeat center/cover;
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-area input {
+  width: 80px;      
+  padding: 15px 15px;  
+  border: 1px solid #ccc;
+  border-radius: 8px;   
+  text-align: center;
+  font-size:18px;   
+  background-color: rgb(236, 236, 236);
+}
+
+
+.input-area p {
+  line-height: 1.4;
+  margin: 0 0 14px 0;  /* ← 下に余白追加 */
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a3b2b;
+}
+
+.input-area button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(to right,#77B254, #5B913B);
+  color: #4a3b2b;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.input-area button:hover {
+  background: linear-gradient(to right, #77B254, #5B913B);
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+}
+
+.cat-chef-inside {
+  position: absolute;
+  bottom: 40px;
+  left: 70%;
+  transform: translateX(-50%) scale(0.8);
+  width: 300px;
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ログイン部分 */
+.login-container {
+  position: absolute;            /* 絶対位置で配置 */
+  top: 100px;                    /* ヘッダー下に余白 */
+  right: 20px;                 
+  background-color: #fffaf0;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-size: 18px;
+  text-align: left;
+  width: 240px;
+  z-index: 10;                  /* 他の要素より前に出す */
+}
+
+@media screen and (max-width: 768px) {
+  .login-container {
+    left: 10px;
+    width: 90%;
+    top: 80px;
+  }
+}
+
+
+.login-container h3 {
+  font-size: 14px;
+  color: #4a3b2b;
+  margin-bottom: 10px;
+  font-weight: bold;
+ 
+}
+
+.login-container input {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fffaf0;
+}
+
+.loginbtn {
+  width: 100%;
+  padding: 6px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(to right,#77B254, #5B913B);
+  color: white;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.loginbtn:hover {
+  background: linear-gradient(to right, #6aa548, #4f8534);
+  transform: scale(1.03);
+}
+
+.move {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+.move:hover {
+  text-decoration: underline;
+  color: #333;
+}
+
+
+/* relative要素が必要 */
+.home-layout {
+  position: relative; /* .title-over-plateの基準位置にする */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  margin-top: 0;
+}
+
+
+/* menu.html 選ばれた献立 */
+
+.main-container {
+  display: flex;
+  padding: 0 40px;
+  justify-content: center;         /* 中央寄せ */
+  align-items: flex-start;         /* 上端揃え */
+  gap: 32px;                       /* 左右の間隔 */
+  flex-wrap: wrap;                 /* レスポンシブ対応：幅が狭いと縦並びに */
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.chosenmeal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.meal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+   }
+
+.meal-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+   background: #fffaf0;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid #e0d0b5;
+  
+}
+
+.meal-thumb {
+  width: 140px;
+  height:120px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  background: #fffaf0;
+ }
+
+.meal-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.meal-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a3b2b;
+  margin: 0;
+}
+
+.meal-header {
+  display: flex;
+  align-items: center; /* 垂直方向を中央に揃える */
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+/* ★追加：form 全体をインラインブロックにする */
+.favorite-form {
+  margin: 0;
+  padding: 0;
+}
+
+.favorite-form button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  background-color: #ECCA9C;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  }
+
+.favorite-form button:hover {
+  background-color: #DBA979;
+  color: #000;
+}
+
+.ingredient-nested-list {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 4px 0 0 0;
+  color: #5a4a3c;
+  font-size: 16px;
+  width: 100%;             /* 親の幅いっぱいに広げる */
+  max-width: 400px;        /* 必要に応じて任意の上限幅 */
+  word-break: break-word;  /* 長い単語でも折り返し */
+}
+
+
+.btn {
+  display: inline-block;
+  background: linear-gradient(to right,#77B254, #5B913B);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #77B254, #5B913B);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+a.return-link {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: #ECCA9C;
+  color: #333;
+  text-decoration: none;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+a.return-link:hover {
+  background: linear-gradient(to right,#ECCA9C, #DBA979);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  color: #000;
+}
+
+.ingredientlist {
+  background: #fffaf0;
+  padding:  8px 16px 16px;
+  border-radius: 16px;
+  border: 1px solid #e0d0b5;
+ 
+  box-sizing: border-box;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  position: relative;
+}
+
+.ingredients-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-right: 0; 
+}
+
+.ingredientlist h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: #3f352b;
+  text-align: left;
+}
+
+.ingredients-table td {
+  border-bottom: 1px solid #ecd9c6;
+  padding: 8px;
+  text-align: left;
+}
+
+.ingredients-table .checkbox-col {
+  width: 24px;
+  text-align: center;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 24px;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+/* 会員登録画面 */
+.register-container {
+  width: 350px;
+  margin: 20px auto;
+  background-color: #fffaf0;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  color: #4a3b2b;
+}
+
+.register-container h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.register-container label {
+  font-size: 15px;
+  text-align: left;
+  display: block;
+  margin-bottom: 2px;
+  
+}
+
+.register-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.register-container .btn {
+  width: 60%;
+  padding: 6px;
+  background: linear-gradient(to right,#77B254, #5B913B);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.register-note {
+  text-align: left;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* ================
+   お気に入り一覧
+   ================*/
+.fav-list-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.fav-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 100px;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #4a3b2b;
+}
+
+.menu-label {
+  flex-grow: 1;
+  margin: 0 0 0 30px;
+}
+
+.delete-label {
+  width: 50px;
+  text-align: right;
+}
+
+ul.fav-list {
+  list-style: none;
+  padding: 10px;
+  margin: 0 auto;                 /* ← 中央寄せ */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  max-width: 300px;              /* ← 表全体の横幅を制限 */
+}
+
+ul.fav-list li {
+  position: relative;
+  padding: 6px 12px 6px 28px;  
+  margin-bottom: 4px;
+  background-color: #f8f8f8;
+  border-left: 3px solid #77B254;
+  border-radius: 4px;
+  font-size: 16px;              
+  font-weight: normal;
+  text-align: left;         
+  line-height: 1.2;
+  padding-left: 30px;
+  margin-bottom: 6px;
+}
+
+ul.fav-list li:before {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  font-size: 20px;
+  width: 30px;
+  text-align: center;
+}
+
+.delete-form {
+  margin: 0;
+}
+
+.delete-btn {
+  background-color:  rgb(167, 209, 141);;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;   
+  height: 30px;
+  font-size: 12px; 
+  text-align: center;
+  line-height: 18px;
+  float: right;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #e06666;
+}
+
+

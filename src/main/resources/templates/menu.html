@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>献立結果</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+</head>
+
+<body class="menubody">
+  <div class="page-container">
+
+    <!-- ヘッダー -->
+    <div class="header-bar">
+      <h1 class="site-title">選ばれた献立</h1>
+      <div class="user-info" th:if="${#authorization.expression('isAuthenticated()')}">
+        <span th:text="${#authentication.name + ' さん、こんにちは！'}"></span>
+        <a th:href="@{/logout}" class="logout-link">🔓 ログアウト</a>
+      </div>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div th:if="${message != null}" class="message-box">
+      <p th:text="${message}"></p>
+    </div>
+
+    <div class="main-container">
+      <!-- 左側：選ばれた献立 -->
+      <div class="chosenmeal">
+        <ul class="meal-list">
+          <li th:each="meal : ${selectedMeals}" th:with="mealKey=${meal.category + '-' + meal.id}" class="meal-list-item">
+            <img th:src="@{${meal.imagePath}}" alt="料理画像" class="meal-thumb">
+            <div class="meal-content">
+              <div class="meal-header">
+                <label class="meal-label">
+                  <input type="checkbox" name="keepIds" th:value="${mealKey}"
+                    th:checked="${keepIds != null and keepIds.contains(mealKey)}" />
+                  <span th:text="${meal.maindish}"></span>
+                  <span th:if="${meal.sidedish != null}" th:text="'（' + ${meal.sidedish} + '）'"></span>
+                </label>
+
+                <!-- お気に入り追加：ログイン中のみ表示 -->
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                  <form class="favorite-form" 
+                    th:attr="data-dishid=${meal.id}, data-dishtype=${meal.category == 1 ? 'meat' : (meal.category == 2 ? 'fish' : 'other')}">
+                    <button type="submit">★ お気に入りに追加</button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- 材料リスト -->
+              <ul class="ingredient-nested-list">
+                <li th:each="ing : ${meal.ingredients}">
+                  <span th:text="${ing}"></span>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+
+        <!-- 横並びボタンエリア -->
+        <div class="action-buttons">
+          <!-- 再作成フォーム -->
+          <form id="reselectForm" action="/reselect" method="post" th:object="${mealRequest}">
+            <input type="hidden" th:field="*{mealCount}" />
+            <input type="hidden" th:field="*{meatCount}" />
+            <input type="hidden" th:field="*{fishCount}" />
+            <input type="hidden" th:field="*{otherCount}" />
+            <div id="keepInputsContainer"></div>
+             <button type="submit" class="btn-dotted">🍽️ 残りの献立を再作成</button>
+          </form>
+
+          <!-- お気に入り一覧リンク（ログイン中のみ） -->
+          <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/myfavorites}" class="btn-dotted">❤️ お気に入り一覧</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右側：買い物リスト -->
+      <div class="ingredientlist">
+        <h2>🛒 買い物リスト</h2>
+        <table class="ingredients-table">
+          <tbody>
+            <tr th:each="ing : ${ingredients}">
+              <td class="checkbox-col"><input type="checkbox" /></td>
+              <td th:text="${ing}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="footer-nav">
+    <a href="/" class="fotterbtn">🍽️HOME</a>
+    <p class="copyright">© One Plate Go</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    document.querySelectorAll(".favorite-form").forEach(form => {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const dishId = form.dataset.dishid;
+        const dishType = form.dataset.dishtype;
+
+        const params = new URLSearchParams();
+        params.append("dishId", dishId);
+        params.append("dishType", dishType);
+
+        fetch('/myfavorites/add-json', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "added") {
+            alert("✅ お気に入りに追加しました！");
+          } else if (data.status === "duplicate") {
+            alert("⚠ すでにお気に入りに登録されています。");
+          } else if (data.status === "unauthorized") {
+            alert("ログインが必要です。");
+            window.location.href = "/login";
+          } else {
+            alert("追加失敗しました");
+          }
+        })
+        .catch(() => {
+          alert("通信エラーが発生しました");
+        });
+      });
+    });
+
+    // 再作成時のkeepIds動的セット
+    document.getElementById('reselectForm').addEventListener('submit', function (e) {
+      const container = document.getElementById('keepInputsContainer');
+      container.innerHTML = '';
+      document.querySelectorAll('input[name="keepIds"]:checked').forEach(cb => {
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'keepIds';
+        hidden.value = cb.value;
+        container.appendChild(hidden);
+      });
+    });
+  </script>
+</body>
+</html>

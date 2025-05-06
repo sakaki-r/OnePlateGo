@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>One Plate Go</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <style>
+    .plate-container {
+      background: url([[@{/images/plate.jpg}]]) no-repeat center/cover;
+    }
+  </style>
+</head>
+
+<body>
+<div class="page-container">
+
+  <!-- ✅ ヘッダー全体 -->
+  <div class="header-bar">
+    <h1 class="site-title">献立作成</h1>
+
+    <!-- ログイン時：ユーザー名＋ログアウト -->
+    <div class="user-info" th:if="${#authorization.expression('isAuthenticated()')}">
+      <span th:text="${#authentication.name + ' さん、こんにちは！'}"></span>
+      <a th:href="@{/logout}" class="logout-link">🔓 ログアウト</a>
+    </div>
+
+    <!-- 未ログイン時：ログイントグルボタン -->
+    <div class="user-info" th:if="${not #authorization.expression('isAuthenticated()')}">
+  <button class="show-login-btn">🔓 ログイン</button>
+</div>
+
+  </div>
+
+  <!-- ✅ ログインフォーム（トグル式） -->
+  <div class="login-container" id="loginContainer" th:if="${not #authorization.expression('isAuthenticated()')}" style="display: none;">
+    <h3>ログイン</h3>
+    <form th:action="@{/login}" method="post">
+      <input type="text" name="username" placeholder="ユーザー名" required />
+      <input type="password" name="password" placeholder="パスワード" required />
+      <button type="submit" class="loginbtn">ログイン</button>
+      <p><a th:href="@{/register}" class="move">会員登録をご希望の方はこちら</a></p>
+      <p th:if="${param.error}" style="color:red; font-size: 11px;">ユーザー名またはパスワードが違います</p>
+      <p th:if="${param.logout}" style="color:green; font-size: 11px;">ログアウトしました</p>
+    </form>
+  </div>
+
+  <!-- ✅ 献立作成レイアウト -->
+  <div class="home-layout">
+    <div class="plate-container">
+      <img id="cat-animation" src="/images/cat-back.png" alt="シェフ猫" class="cat-chef-inside">
+
+      <form class="input-area" action="/result" method="post" th:object="${mealRequest}">
+        <p>何人分：<input id="input-meal" type="number" th:field="*{mealCount}" min="1" required></p>
+        <p>肉料理：<input id="input-meat" type="number" th:field="*{meatCount}" min="0" required></p>
+        <p>魚料理：<input id="input-fish" type="number" th:field="*{fishCount}" min="0" required></p>
+        <p>その他：<input id="input-other" type="number" th:field="*{otherCount}" min="0" required></p>
+        <p>合計料理数：<span id="totalCount">0</span></p>
+        <button type="submit">献立をつくる！</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- ✅ JavaScript -->
+<script>
+  function updateTotal() {
+    const meat = parseInt(document.querySelector('[name="meatCount"]').value || 0);
+    const fish = parseInt(document.querySelector('[name="fishCount"]').value || 0);
+    const other = parseInt(document.querySelector('[name="otherCount"]').value || 0);
+    document.getElementById("totalCount").innerText = meat + fish + other;
+    playCatAnimation();
+  }
+
+ 
+  function playCatAnimationLoop() {
+    const catImg = document.getElementById("cat-animation");
+    const frames = [
+      "/images/cat-back.png",
+      "/images/cat_front1.png",
+      "/images/cat_front2.png",
+      "/images/cat_front3.png"
+    ];
+
+    let i = 0;
+    setInterval(() => {
+      catImg.src = frames[i % frames.length];
+      i++;
+    }, 2500); // 2秒ごとに切り替え
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // 入力監視（必要なら）
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+      input.addEventListener('input', updateTotal);
+    });
+    updateTotal();
+
+    // 猫をアニメーションさせ続ける
+    playCatAnimationLoop();
+  });
+
+  function updateTotal() {
+    const meat = parseInt(document.querySelector('[name="meatCount"]').value || 0);
+    const fish = parseInt(document.querySelector('[name="fishCount"]').value || 0);
+    const other = parseInt(document.querySelector('[name="otherCount"]').value || 0);
+    document.getElementById("totalCount").innerText = meat + fish + other;
+  }
+
+
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+      input.addEventListener('input', updateTotal);
+    });
+    updateTotal();
+
+    // ✅ トグル式ログインフォーム
+    const loginBtn = document.querySelector(".show-login-btn");
+    const loginForm = document.getElementById("loginContainer");
+    if (loginBtn && loginForm) {
+      loginBtn.addEventListener("click", () => {
+        const isHidden = loginForm.style.display === "none";
+        loginForm.style.display = isHidden ? "block" : "none";
+        loginBtn.textContent = isHidden ? "✖️ 閉じる" : "🔓 ログイン";
+      });
+    }
+  });
+</script>
+</body>
+<footer class="footer-nav">
+  <a href="/" class="fotterbtn">🍽️HOME</a>
+  <p class="copyright">© One Plate Go</p>
+</footer>
+</html>
