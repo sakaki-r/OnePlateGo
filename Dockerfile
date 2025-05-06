@@ -1,12 +1,14 @@
-# Step 1: Build the application
-FROM maven:3.8.6-openjdk-17 AS build
+# ベースイメージを公式の存在するものに修正
+FROM maven:3.9.4-eclipse-temurin-17
+
+# 作業ディレクトリの作成
 WORKDIR /app
+
+# pom.xml とソースをコピー
 COPY . .
+
+# アプリをビルド（テストはスキップ）
 RUN mvn clean package -DskipTests
 
-# Step 2: Run the application
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# JAR ファイルを実行
+CMD ["java", "-jar", "target/OnePlateGo-0.0.1-SNAPSHOT.jar"]
