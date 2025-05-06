@@ -31,3 +31,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Java / Maven / Spring Boot 用 .gitignore の例
+/target/
+*.log
+*.class
+
+# IntelliJ / Eclipse 用
+*.iml
+.idea/
+*.classpath
+*.project
+*.settings/
+
+# 機密情報（★追加！）
+src/main/resources/application.properties
+
